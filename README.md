@@ -200,6 +200,51 @@ docker compose -f docker-compose-authority.yml --env-file ./deploy/configs/.env 
 ✔ Container bnes-light Started                                             0.5s
 ```
 
+## Build Status
+
+### Docker Image Build
+
+| Component | Status |
+|------------|----------|
+| Docker Image | ✅ Built |
+| Build Duration | 163.2s |
+| Network | ✅ Created |
+| Volume | ✅ Created |
+| Container | ✅ Started |
+
+### Generated Image
+
+```text
+bearnetworkchain/bnes-node:light
+```
+
+### Build Summary
+
+```text
+Image SHA256:
+ba791fc7526ff36016784d2cc16a9fcd9c6346e6b7e07
+```
+
+### Deployment Resources
+
+```text
+Network:
+bnes_net
+
+Volume:
+bnes_deployment_light-data
+
+Container:
+bnes-light
+```
+
+### Result
+
+```text
+Deployment completed successfully.
+BNES Light Node is running.
+```
+
 ---
 
 ## 7. 跨 VPS 全球互聯
