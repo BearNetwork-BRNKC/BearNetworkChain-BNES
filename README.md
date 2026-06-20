@@ -141,6 +141,65 @@ docker compose -f docker-compose-authority.yml --env-file ./deploy/configs/.env 
 
 > **注意**：修改 `*-config.toml` 後需要 `down` 再 `up`（非 `restart`），因為 config.toml 是透過 Volume bind mount 掛載的，容器需要重建才能完整重新讀取。
 
+## Docker Build Result
+
+```bash
+[+] Building 61.6s (15/22)
+[+] Building 61.8s (15/22)
+[+] Building 61.9s (15/22)
+[+] Building 62.1s (15/22)
+[+] Building 62.2s (15/22)
+[+] Building 62.4s (15/22)
+[+] Building 62.5s (15/22)
+[+] Building 62.6s (15/22)
+[+] Building 158.8s (15/22)
+[+] Building 158.9s (15/22)
+[+] Building 159.1s (15/22)
+[+] Building 161.2s (24/24) FINISHED
+
+=> [internal] load local bake definitions                                  0.0s
+=> => reading from stdin 558B                                              0.0s
+=> [internal] load build definition from Dockerfile                        0.0s
+=> => transferring dockerfile: 4.71kB                                      0.0s
+=> [internal] load metadata for docker.io/library/golang:1.22-bookworm     1.2s
+=> [internal] load metadata for docker.io/library/debian:bookworm-slim     1.2s
+=> [internal] load .dockerignore                                           0.0s
+=> => transferring context: 331B                                           0.0s
+=> [internal] load build context                                           0.2s
+=> => transferring context: 667.59kB                                       0.2s
+
+=> [builder 1/7] FROM docker.io/library/golang:1.22-bookworm@sha256:3d69   0.0s
+=> [stage-1 1/9] FROM docker.io/library/debian:bookworm-slim@sha256:96e3   0.0s
+
+=> CACHED [stage-1 2/9] RUN apt-get update && apt-get install -y ...        0.0s
+=> CACHED [stage-1 3/9] WORKDIR /app                                        0.0s
+=> CACHED [builder 2/7] RUN apt-get update && apt-get install -y ...        0.0s
+=> CACHED [builder 3/7] RUN curl --proto '=https' --tlsv1.2 ...             0.0s
+=> CACHED [builder 4/7] WORKDIR /app                                        0.0s
+
+=> [builder 5/7] COPY . .                                                   0.8s
+=> [builder 6/7] RUN cd bnes-halo2-ffi && cargo build --release            58.7s
+=> [builder 7/7] RUN set -e; mkdir -p build/bin; ARCH=$(uname -m) ...      98.0s
+
+=> [stage-1 4/9] COPY --from=builder /app/build/bin/bnes /app/bnes          0.2s
+=> [stage-1 5/9] COPY --from=builder /app/bnes-halo2-ffi/...                0.0s
+=> [stage-1 6/9] RUN ldconfig                                               0.4s
+=> [stage-1 7/9] COPY deploy/genesis_mainnet.json ...                       0.0s
+=> [stage-1 8/9] COPY deploy/scripts/docker-entrypoint.sh ...               0.0s
+=> [stage-1 9/9] RUN chmod +x /app/entrypoint.sh                            0.4s
+
+=> exporting to image                                                       0.5s
+=> => exporting layers                                                      0.5s
+=> => writing image sha256:ba791fc7526ff36016784d2cc16a9fcd9c6346e6b7e07    0.0s
+
+[+] up 4/4ing to docker.io/bearnetworkchain/bnes-node:light                 0.0s
+
+✔ Image bearnetworkchain/bnes-node:light Built                            163.2s
+✔ Network bnes_net Created                                                  0.1s
+✔ Volume bnes_deployment_light-data Created                                0.0s
+✔ Container bnes-light Started                                             0.5s
+```
+
 ---
 
 ## 7. 跨 VPS 全球互聯
